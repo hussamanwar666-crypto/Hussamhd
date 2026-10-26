@@ -124,7 +124,7 @@
     </div>
 
     <!-- الساعة الرقمية الحية -->
-    <div id="clock">جاري تحميل الساعة...</div>
+    <div id="clock">--:--:--</div>
 
     <h1>حسام شبكتي</h1>
 
@@ -261,4 +261,68 @@
         <!-- تطبيق موفي بوكس -->
         <div class="app-card">
             <div class="app-info">
-                <div class="app-icon" style="background-color: #6a1
+                <div class="app-icon" style="background-color: #6a1b9a;">MovieBox</div>
+                <div class="app-details">
+                    <div class="app-title">MovieBox</div>
+                    <div class="app-sub">الإصدار 4.0.06</div>
+                </div>
+            </div>
+            <a href="https://www.mediafire.com/file/zswqd4s8vhti2rz/MovieBox_4.0.06.1942.04.apk/file" target="_blank" class="download-btn">تحميل APK</a>
+        </div>
+
+        <!-- تطبيق كايدن TV -->
+        <div class="app-card">
+            <div class="app-info">
+                <div class="app-icon" style="background-color: #c62828;">كايدن</div>
+                <div class="app-details">
+                    <div class="app-title">كايدن TV</div>
+                    <div class="app-sub">الإصدار 3.0</div>
+                </div>
+            </div>
+            <a href="https://www.mediafire.com/file/5frejy9sxe7kfqk/%25D9%2583%25D8%25A7%25D9%258A%25D8%25AF%25D9%2586+tv_3.0.apk/file" target="_blank" class="download-btn">تحميل APK</a>
+        </div>
+
+        <!-- تطبيق دراما لايف -->
+        <div class="app-card">
+            <div class="app-info">
+                <div class="app-icon" style="background-color: #00838f;">دراما</div>
+                <div class="app-details">
+                    <div class="app-title">Drama Live</div>
+                    <div class="app-sub">الإصدار 13.0.3</div>
+                </div>
+            </div>
+            <a href="https://www.mediafire.com/file/4a5r37eeyzcscaj/Drama_Live_13.0.3.apk/file" target="_blank" class="download-btn">تحميل APK</a>
+        </div>
+
+        <!-- تطبيق تركي مود -->
+        <div class="app-card">
+            <div class="app-info">
+                <div class="app-icon" style="background-color: #ad1457;">تركي</div>
+                <div class="app-details">
+                    <div class="app-title">تركي مود</div>
+                    <div class="app-sub">الإصدار 1.0.13</div>
+                </div>
+            </div>
+            <a href="https://www.mediafire.com/file/o5o90fmqn3fof2o/%25D8%25AA%25D8%25B1%25D9%2583%25D9%258A+%25D9%2588%25D8%25AF_1.0.13.apk/file" target="_blank" class="download-btn">تحميل APK</a>
+        </div>
+    </div>
+
+    <!-- كود الساعة الرقمية المحدث والجاهز -->
+    <script>
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            let ampm = hours >= 12 ? 'م' : 'ص';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            document.getElementById('clock').innerText = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
