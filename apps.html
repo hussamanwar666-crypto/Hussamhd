@@ -813,18 +813,26 @@
             });
         });
 
-        function updateClock() {
+                function updateClock() {
             const now = new Date();
-            document.getElementById("live-clock").textContent = now.toLocaleTimeString("ar-IQ", {
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit"
-            });
-            document.getElementById("live-date").textContent = now.toLocaleDateString("ar-IQ", {
-                weekday: "short",
-                day: "numeric",
-                month: "short"
-            });
+            const clockEl = document.getElementById("liveClock");
+            const dateEl = document.getElementById("liveDate");
+
+            if (clockEl) {
+                clockEl.textContent = now.toLocaleTimeString("ar-IQ", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                });
+            }
+
+            if (dateEl) {
+                dateEl.textContent = now.toLocaleDateString("ar-IQ", {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "short"
+                });
+            }
         }
 
         renderApps();
