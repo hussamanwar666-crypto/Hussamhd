@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حسام شبكتي</title>
+    <style>
+        :root {
+            --bg-main: #0b0f14;
+            --bg-card: #121821;
+            --bg-input: #141b24;
+            --border-color: #242f3d;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-green: #16a34a;
+            --accent-green-hover: #15803d;
+            --accent-blue: #2563eb;
+            --accent-blue-hover: #1d4ed8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma, Arial, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* الترويسة: الصورة + الاسم + الساعة */
+        .top-header {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .profile-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #38bdf8;
+            background-color: #1f2937;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .site-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        .site-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .clock-box {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px 14px;
+            text-align: center;
+            min-width: 125px;
+        }
+
+        #live-clock {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #4ade80;
+            direction: ltr;
+        }
+
+        #live-date {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* البحث والفلاتر */
+        .search-box {
+            margin-bottom: 12px;
+        }
+
+        .search-input {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 12px;
+            padding: 13px 16px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-green);
+        }
+
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .filter-btn {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: 7px 14px;
+            font-size: 0.88rem;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent-green);
+            border-color: var(--accent-green);
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        /* شبكة البطاقات */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .app-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        .app-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .app-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .app-badge-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: #ffffff;
+            flex-shrink: 0;
+            text-align: center;
+            padding: 4px;
+            overflow: hidden;
+        }
+
+        .app-badge-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .app-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .app-category {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .app-version {
+            background-color: rgba(22, 163, 74, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(22, 163, 74, 0.35);
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .download-btn, .player-btn {
+            flex: 1;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 11px;
+            border-radius: 10px;
+            font-size: 0.92rem;
+        }
+
+        .download-btn {
+            background-color: var(--accent-green);
+        }
+
+        .download-btn:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+        .player-btn {
+            background-color: var(--accent-blue);
+        }
+
+        .player-btn:hover {
+            background-color: var(--accent-blue-hover);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 32px 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="top-header">
+            <div class="profile-box">
+                <img src="FB_IMG_1790162292059.jpg" alt="صورة حسام" class="profile-img">
+                <div>
+                    <div class="site-title">حسام شبكتي</div>
+                    <div class="site-subtitle">تطبيقات التلفاز والاندرويد</div>
+                </div>
+            </div>
+
+            <div class="clock-box">
+                <div id="live-clock">--:--:--</div>
+                <div id="live-date">---</div>
+            </div>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="search-input" class="search-input" placeholder="ابحث عن تطبيق...">
+        </div>
+
+        <div class="filters-bar" id="filters-bar">
+            <button class="filter-btn active" data-filter="الكل">الكل</button>
+            <button class="filter-btn" data-filter="سينما">سينما</button>
+            <button class="filter-btn" data-filter="بث ومشاهدة">بث ومشاهدة</button>
+            <button class="filter-btn" data-filter="مشغلات">مشغلات</button>
+            <button class="filter-btn" data-filter="أدوات">أدوات</button>
+        </div>
+
+        <main class="apps-grid" id="apps-grid"></main>
+        <div class="empty-state" id="empty-state">لا توجد تطبيقات مطابقة للبحث.</div>
+    </div>
+
+    <script>
+        const appsData = [
+            {
+                name: "SmartTube",
+                category: "بث ومشاهدة",
+                note: "يوتيوب للشاشات V32.68",
+                version: "V32.68",
+                color: "#dc2626",
+                url: "https://www.mediafire.com/file/38fktdjaksvmkgz/SmartTube_32.68.apk/file"
+            },
+            {
+                name: "Otf TV",
+                category: "بث ومشاهدة",
+                note: "للموبايل والشاشة V3.2",
+                version: "V3.2",
+                color: "#0284c7",
+                url: "https://drive.google.com/uc?export=download&id=1DjXmXiGYJrJN5oS0dTiEKQahcJWMOvuO"
+            },
+            {
+                name: "الأسطورة للشاشات",
+                category: "بث ومشاهدة",
+                note: "الإصدار 7.0",
+                version: "v7.0",
+                color: "#7c3aed",
+                url: "https://www.mediafire.com/file/ocp5gy62fl4hwpm/Ostora+Tv+v7.0+%25282%2529.apk/file",
+                playerUrl: "https://www.mediafire.com/file/t6uxyd8u49byye6/Url+Video+Player_4_٣.0.apk/file"
+            },
+            {
+                name: "Reezn",
+                category: "بث ومشاهدة",
+                note: "تطبيق مميز",
+                version: "APK",
+                color: "#7c3aed",
+                url: "https://www.mediafire.com/file/6br3ty884v6x30g/Reezn+(1)+(1).apk/file"
+            },
+            {
+                name: "Yacine TV Black",
+                category: "بث ومشاهدة",
+                note: "الإصدار الأسود الجديد",
+                version: "Black",
+                color: "#111111",
+                url: "https://www.mediafire.com/file/6wed9djo82gm5w7/Yacine+TV+Black.apk/file"
+            },
+            {
+                name: "الأسطورة TV",
+                category: "بث ومشاهدة",
+                note: "الإصدار 7.0",
+                version: "v7.0",
+                color: "#673ab7",
+                url: "https://www.mediafire.com/file/pqyttj0k3q6lbe3/%25D8%25A7%25D9%2584%25D8%25A3%25D8%25B3%25D8%25B7%25D9%2588%25D8%25B1%25D9%2589+TV_7.0.apk/file",
+                playerUrl: "https://www.mediafire.com/file/rt0ob8zljr8pre9/Url+Video+Player_4.0+%25281%2529.apk/file"
+            },
+            {
+                name: "الباشا تيفي",
+                category: "بث ومشاهدة",
+                note: "الإصدار 6.0.5",
+                version: "v6.0.5",
+                color: "#d32f2f",
+                url: "https://www.mediafire.com/file/u6yh7o6qdknk9x6/ALBASHA+TV_6.0.5+(1).apk/file"
+            },
+            {
+                name: "General TV",
+                category: "بث ومشاهدة",
+                note: "الإصدار 2.19",
+                version: "v2.19",
+                color: "#f57c00",
+                url: "https://www.mediafire.com/file/o7x07oisqih4n9c/GENRAL+TV_2.19.apk/file",
+                playerUrl: "https://play.google.com/store/apps/details?id=com.gtv.player"
+            },
+            {
+                name: "CEE TV",
+                category: "بث ومشاهدة",
+                note: "تطبيق شاشات Android TV",
+                version: "Leanback",
+                color: "#2e7d32",
+                url: "https://www.mediafire.com/file/asowblwa119g3ft/CEE%252BLeanback_Last%25282%2529.apk/file"
+            },
+            {
+                name: "سينمانا الأصلية",
+                category: "سينما",
+                note: "الإصدار 5.3.3 الأصلي",
+                version: "v5.3.3",
+                color: "#0d47a1",
+                url: "https://www.mediafire.com/file/7cnmatdqx37odh4/cinemana_5.3.3.apk/file"
+            },
+            {
+                name: "أوسكار تيفي",
+                category: "بث ومشاهدة",
+                note: "الإصدار v1.1.6",
+                version: "v1.1.6",
+                color: "#e65100",
+                url: "https://www.mediafire.com/file/5tgyoe57osnddd8/OscarTV_v1.1.6.apk/file"
+            },
+            {
+                name: "MovieBox",
+                category: "سينما",
+                note: "الإصدار الجديد V4.0.03",
+                version: "V4.0.03",
+                color: "#3b82f6",
+                url: "https://www.mediafire.com/file/74jy5goeahs439x/MovieBox+_4.0.03.1020.03.apk/file"
+            },
+            {
+                name: "كايدن TV",
+                category: "بث ومشاهدة",
+                note: "الإصدار 3.0",
+                version: "v3.0",
+                color: "#c62828",
+                url: "https://www.mediafire.com/file/5frejy9sxe7kfqk/%25D9%2583%25D8%25A7%25D9%258A%25D8%25AF%25D9%2586+tv_3.0.apk/file"
+            },
+            {
+                name: "Drama Live",
+                category: "بث ومشاهدة",
+                note: "الإصدار 13.0.3",
+                version: "v13.0.3",
+                color: "#00838f",
+                url: "https://www.mediafire.com/file/4a5r37eeyzcscaj/Drama_Live_13.0.3.apk/file"
+            },
+            {
+                name: "تركي مود",
+                category: "سينما",
+                note: "الإصدار 1.0.13",
+                version: "v1.0.13",
+                color: "#ad1457",
+                url: "https://www.mediafire.com/file/o5o90fmqn3fof2o/%25D8%25AA%25D8%25B1%25D9%2583%25D9%258A+%25D9%2588%25D8%25AF_1.0.13.apk/file"
+            },
+            {
+                name: "باب المشاهد",
+                category: "سينما",
+                note: "الإصدار 2.0.0",
+                version: "v2.0.0",
+                color: "#0284c7",
+                url: "https://www.mediafire.com/file/8uasfex3h4vfau8/باب+المشاهد_2.0.0.apk/file"
+            },
+            {
+                name: "MBC Shahid",
+                category: "سينما",
+                note: "الإصدار 8.11.0",
+                version: "v8.11.0",
+                color: "#10b981",
+                url: "https://www.mediafire.com/file/65nubsb5qpnc1lb/MBC+Shahid_8.11.0.apk/file"
+            },
+            {
+                name: "تطبيق AKO TV",
+                category: "بث ومشاهدة",
+                note: "مع المشغل الخاص V2.4.7",
+                version: "V2.4.7",
+                color: "#f43f5e",
+                url: "https://www.mediafire.com/file/vbissahmueuy9io/ako_tv_2.4.7.apk/file",
+                playerUrl: "https://www.mediafire.com/file/jnaxqpisrmlggyc/akoplayer_8.3.18.apk/file"
+            },
+            {
+                name: "سينمانا لينباك",
+                category: "سينما",
+                note: "الإصدار 4.5.9",
+                version: "v4.5.9",
+                color: "#f59e0b",
+                url: "https://www.mediafire.com/file/c38xoqw4dsu9l5z/سينمانا+لينباك_4.5.9+%282%29.apk/file"
+            },
+            {
+                name: "Cinema Box Android TV",
+                category: "سينما",
+                note: "للابلاغ والكيبل الضوئي V4.2.20",
+                version: "V4.2.20",
+                color: "#3b82f6",
+                url: "https://www.mediafire.com/file/ilgmihcor76c231/Cinema+Box+Android+TV_4.2.20.apk/file"
+            },
+            {
+                name: "Max TV Pro",
+                category: "بث ومشاهدة",
+                note: "اشتراك رسمي V3.6",
+                version: "V3.6",
+                color: "#10b981",
+                url: "https://www.mediafire.com/file/g0vxdi79clnyryj/Max+tv+pro_3.6.apk/file"
+            },
+            {
+                name: "متجر تطبيقات Bazaar",
+                category: "أدوات",
+                note: "الإصدار 30.1.0",
+                version: "v30.1.0",
+                color: "#ef4444",
+                url: "https://www.mediafire.com/file/jq2sbuodcggfd6n/Bazaar_30.1.0.apk/file"
+            },
+            {
+                name: "تطبيق MixFlix",
+                category: "سينما",
+                note: "مع مشغل صن بلس الرسمي",
+                version: "v2.23",
+                color: "#6366f1",
+                url: "https://www.mediafire.com/file/ugqowdtgsjfrp1m/MixFlix_2.23.apk/file",
+                playerUrl: "https://play.google.com/store/apps/details?id=com.noda.SunplusPlayer"
+            },
+            {
+                name: "Send Files To TV",
+                category: "أدوات",
+                note: "إرسال ملفات من الموبايل للشاشة",
+                version: "v1.3.8",
+                color: "#0ea5e9",
+                url: "https://www.mediafire.com/file/sytdo962f1pj4l3/Send+Files+To+TV_1.3.8+%25281%2529.apk/file"
+            },
+            {
+                name: "FX File Explorer Pro",
+                category: "أدوات",
+                note: "مدير الملفات",
+                version: "v9.0.1.2",
+                color: "#475569",
+                url: "http://www.mediafire.com/file/8yukhh04er7x5jv/FX+File+Explorer+Pro_9.0.1.2+%25281%2529+%25281%2529.apk/file"
+            },
+            {
+                name: "SportzX",
+                category: "بث ومشاهدة",
+                note: "سبورتز اكس رياضة",
+                version: "v3.2",
+                color: "#16a34a",
+                url: "https://www.mediafire.com/file/bqpvz1pqxe2c121/SportzX_3.2.apk/file"
+            },
+            {
+                name: "Remo TV",
+                category: "بث ومشاهدة",
+                note: "تطبيق تلفاز",
+                version: "v 5.1",
+                color: "#7c3aed",
+                url: "https://www.mediafire.com/file/kzczf1dgqa7h4ug/remo+TV_5.1.apk/file"
+            },
+            {
+                name: "كايدن TV",
+                category: "بث ومشاهدة",
+                note: "كود التفعيل: 23",
+                version: "v 7.5.2",
+                color: "#c62828",
+                url: "https://www.mediafire.com/file/006pxixgrq3v53f/%25D9%2583%25D8%25A7%25D9%258A%25D8%25AF%25D9%2586+tv_7.5.2.apk/file"
+            },
+            {
+                name: "Lookr",
+                category: "بث ومشاهدة",
+                note: "تطبيق مشاهدة",
+                version: "v 3.0.16",
+                color: "#2563eb",
+                url: "https://www.mediafire.com/file/8labyn85koyuk23/Lookr_3.0.16.0706.03+%281%29.apk/file"
+            },
+            {
+                name: "EGYBEST TV",
+                category: "سينما",
+                note: "للشاشات",
+                version: "v 3.0.0",
+                color: "#b91c1c",
+                url: "https://www.mediafire.com/file/zkhi8xew6gug9rh/EgybestTV_v3.0.0_TV.apk/file"
+            },
+            {
+                name: "Cinema VIP",
+                category: "سينما",
+                note: "أفلام ومسلسلات",
+                version: "v 1.8.1",
+                color: "#9333ea",
+                url: "https://www.mediafire.com/file/pzk2q8y3qikpc68/Cinema+VIP_1.8.1.apk/file"
+            },
+            {
+                name: "Zetflix",
+                category: "سينما",
+                note: "أفلام ومسلسلات",
+                version: "v 1.6.44",
+                color: "#dc2626",
+                url: "https://www.mediafire.com/file/u3noqfyu9xe32aj/Zetflix_1.6.44.apk/file"
+            },
+            {
+                name: "See Drama",
+                category: "سينما",
+                note: "دراما ومسلسلات",
+                version: "v 5.46",
+                color: "#db2777",
+                url: "https://www.mediafire.com/file/guvrpo3akry132p/SEE+DRAMA_5.46.apk/file"
+            },
+            {
+                name: "OZtv",
+                category: "بث ومشاهدة",
+                note: "تطبيق تلفاز",
+                version: "v 4.0.5",
+                color: "#0284c7",
+                url: "https://www.mediafire.com/file/aizszj9gsminibh/oztv-v4.0.5-by-amirtek.apk/file"
+            },
+            {
+                name: "Clipbox",
+                category: "أدوات",
+                note: "إدارة وتحميل الملفات",
+                version: "v 1.6.3.1",
+                color: "#0d9488",
+                url: "https://www.mediafire.com/file/n81ibzzhh08pfhd/ClipBox_1.6.3.1.apk/file"
+            },
+            {
+                name: "Max+plus",
+                category: "بث ومشاهدة",
+                note: "تطبيق مشاهدة",
+                version: "v 1.1",
+                color: "#d97706",
+                url: "https://www.mediafire.com/file/85r03qpu29f6y6b/MAX+Plus_1.1.apk/file"
+            },
+            {
+                name: "1 IRAQ TV",
+                category: "بث ومشاهدة",
+                note: "قنوات وبث مباشر",
+                version: "v 6.0",
+                color: "#15803d",
+                url: "https://www.mediafire.com/file/lzmms4xr0klg1zw/1+IRAQ+TV_6.0.apk/file"
+            },
+            {
+                name: "ATV Launcher",
+                category: "أدوات",
+                note: "واجهة شاشات التلفاز",
+                version: "v 0.0.11",
+                color: "#4f46e5",
+                url: "https://www.mediafire.com/file/kbthwcgp97e6htw/ATV+Launcher_0.0.11-free.apk/file"
+            },
+            {
+                name: "سينمانا (إيرثلنك للشاشات)",
+                category: "سينما",
+                note: "شاشات إيرثلنك",
+                version: "v 4.5.9",
+                color: "#0369a1",
+                url: "https://www.mediafire.com/file/rjqjnzigkcs5hyw/سينمانا+لينباك_4.5.9+(3)+(1).apk/file"
+            },
+            {
+                name: "Aptoide (شاشات)",
+                category: "أدوات",
+                note: "متجر تطبيقات للشاشات",
+                version: "v 4.3.0",
+                color: "#ea580c",
+                url: "https://www.mediafire.com/file/32hrj42xo1p4kwg/Aptoide_4.3.0.apk/file"
+            },
+            {
+                name: "Cinemana ( CBOX )",
+                category: "سينما",
+                note: "نسخة CBOX",
+                version: "v 4.5.9",
+                color: "#b91c1c",
+                iconImg: "https://shabakaty.com/wp-content/uploads/2021/04/cinemana-icon.png",
+                url: "https://www.mediafire.com/file/rjqjnzigkcs5hyw/سينمانا+لينباك_4.5.9+(3)+(1).apk/file"
+            },
+            {
+                name: "أفلامي",
+                category: "سينما",
+                note: "يعمل فقط على شبكة نور البداية",
+                version: "TV v1",
+                color: "#16a34a",
+                url: "https://www.mediafire.com/file/4pfqvxbov6zj3op/aflaame-tv-1.apk/file"
+            },
+            {
+                name: "4u",
+                category: "بث ومشاهدة",
+                note: "تطبيق بث ومشاهدة",
+                version: "TV++",
+                color: "#2563eb",
+                url: "https://www.mediafire.com/file/qwa7zrsi9n38uhj/4U-TV++.apk/file"
+            },
+            {
+                name: "الريان",
+                category: "بث ومشاهدة",
+                note: "تطبيق بث ومشاهدة",
+                version: "TV",
+                color: "#0d9488",
+                url: "https://www.mediafire.com/file/nu5gfhsargnc4tx/%D8%B1%D9%8A%D8%A7%D9%86Rayan-tv.apk/file"
+            },
+            {
+                name: "الشام",
+                category: "بث ومشاهدة",
+                note: "تطبيق بث ومشاهدة",
+                version: "TV",
+                color: "#7c3aed",
+                url: "https://www.mediafire.com/file/kln5tdwox96bmah/AL_Sahm_TV.apk/file"
+            },
+            {
+                name: "ياسين الأسود",
+                category: "بث ومشاهدة",
+                note: "تطبيق بث ومشاهدة",
+                version: "2026",
+                color: "#1f2937",
+                url: "https://www.mediafire.com/file/1esijoazsu2iuqm/Yacine-TV-2026.apk/file"
+            },
+            {
+                name: "ياسين الأزرق",
+                category: "بث ومشاهدة",
+                note: "تطبيق بث ومشاهدة",
+                version: "Blue",
+                color: "#0284c7",
+                url: "https://www.mediafire.com/file/gzlvph5dn7yi8ij/Yacine_TV_blue.apk/file"
+            },
+            {
+                name: "Ako",
+                category: "بث ومشاهدة",
+                note: "تطبيق بث ومشاهدة",
+                version: "v2.4.37",
+                color: "#dc2626",
+                url: "https://www.mediafire.com/file/21lam3ye7ig4gmk/ako_tv_2.4.37.apk/file"
+            },
+            {
+                name: "مشغل Ako",
+                category: "مشغلات",
+                note: "مشغل وسائط للتلفاز",
+                version: "v8.3.38",
+                color: "#d97706",
+                url: "https://www.mediafire.com/file/2st3kg39zz7s0jo/AKO_PLAYER_8.3.38_72.apk/file"
+            }
+        ];
+
+        const appsGridEl = document.getElementById("apps-grid");
+        const searchInputEl = document.getElementById("search-input");
+        const filterButtons = document.querySelectorAll(".filter-btn");
+        const emptyStateEl = document.getElementById("empty-state");
+
+        let currentFilter = "الكل";
+
+        function renderApps() {
+            const query = searchInputEl.value.trim().toLowerCase();
+            appsGridEl.innerHTML = "";
+
+            const filtered = appsData.filter(app => {
+                const matchesCategory = currentFilter === "الكل" || app.category === currentFilter;
+                const matchesSearch =
+                    app.name.toLowerCase().includes(query) ||
+                    app.category.toLowerCase().includes(query) ||
+                    app.note.toLowerCase().includes(query) ||
+                    app.version.toLowerCase().includes(query);
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                emptyStateEl.style.display = "block";
+                return;
+            }
+
+            emptyStateEl.style.display = "none";
+
+            filtered.forEach(app => {
+                const card = document.createElement("div");
+                card.className = "app-card";
+
+                const iconContent = app.iconImg
+                    ? `<img src="${app.iconImg}" alt="${app.name}">`
+                    : app.name;
+
+                const playerBtnHtml = app.playerUrl
+                    ? `<a href="${app.playerUrl}" target="_blank" rel="noopener noreferrer" class="player-btn">المشغل</a>`
+                    : "";
+
+                card.innerHTML = `
+                    <div class="app-top">
+                        <div class="app-main">
+                            <div class="app-badge-icon" style="background-color: ${app.color};">${iconContent}</div>
+                            <div>
+                                <div class="app-name">${app.name}</div>
+                                <div class="app-category">${app.category} • ${app.note}</div>
+                            </div>
+                        </div>
+                        <span class="app-version">${app.version}</span>
+                    </div>
+                    <div class="btn-group">
+                        <a href="${app.url}" target="_blank" rel="noopener noreferrer" class="download-btn">تحميل APK</a>
+                        ${playerBtnHtml}
+                    </div>
+                `;
+                appsGridEl.appendChild(card);
+            });
+        }
+
+        searchInputEl.addEventListener("input", renderApps);
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                filterButtons.forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentFilter = btn.dataset.filter;
+                renderApps();
+            });
+        });
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById("live-clock").textContent = now.toLocaleTimeString("ar-IQ", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
+            document.getElementById("live-date").textContent = now.toLocaleDateString("ar-IQ", {
+                weekday: "short",
+                day: "numeric",
+                month: "short"
+            });
+        }
+
+        renderApps();
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
