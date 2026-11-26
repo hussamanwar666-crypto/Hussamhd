@@ -697,49 +697,7 @@
                 version: "v8.3.38",
                 color: "#d97706",
                 url: "https://www.mediafire.com/file/2st3kg39zz7s0jo/AKO_PLAYER_8.3.38_72.apk/file"
-            }٫
-
-                        {
-                name: "فينوس",
-                category: "بث ومشاهدة",
-                note: "VENUS TV تطبيق بث ومشاهدة",
-                version: "APK",
-                color: "#e11d48",
-                url: "https://www.mediafire.com/file/tgw89la95tmw8qr/VENUS-TV.apk/file"
-            },
-            {
-                name: "FEDIFLIX",
-                category: "سينما",
-                note: "تطبيق أفلام ومسلسلات",
-                version: "New",
-                color: "#2563eb",
-                url: "https://www.mediafire.com/file/54yxuzadkqata7z/FEDIFLIX_new.apk/file"
-            },
-            {
-                name: "عبود",
-                category: "بث ومشاهدة",
-                note: "Abood TV تطبيق بث ومشاهدة",
-                version: "APK",
-                color: "#0d9488",
-                url: "https://www.mediafire.com/file/f3z76ao465htbdb/Abood-TV.apk/file"
-            },
-            {
-                name: "فلاش",
-                category: "بث ومشاهدة",
-                note: "FLASH TV تطبيق بث ومشاهدة",
-                version: "APK",
-                color: "#d97706",
-                url: "https://www.mediafire.com/file/c2ovwyhu9zic2xs/FLASH_TV.apk/file"
-            },
-            {
-                name: "النجوم",
-                category: "بث ومشاهدة",
-                note: "Alnojoom تطبيق بث ومشاهدة",
-                version: "APK",
-                color: "#7c3aed",
-                url: "https://www.mediafire.com/file/90s4lvcis6c9jnn/Alnojoom.apk/file"
-            },
-
+            }
         ];
 
         const appsGridEl = document.getElementById("apps-grid");
@@ -750,25 +708,28 @@
         let currentFilter = "الكل";
 
         function renderApps() {
-            const query = searchInputEl.value.trim().toLowerCase();
+            const query = (searchInputEl ? searchInputEl.value : "").trim().toLowerCase();
+            if (!appsGridEl) return;
+
             appsGridEl.innerHTML = "";
 
             const filtered = appsData.filter(app => {
                 const matchesCategory = currentFilter === "الكل" || app.category === currentFilter;
                 const matchesSearch =
-                    app.name.toLowerCase().includes(query) ||
-                    app.category.toLowerCase().includes(query) ||
-                    app.note.toLowerCase().includes(query) ||
-                    app.version.toLowerCase().includes(query);
+                    !query ||
+                    (app.name && app.name.toLowerCase().includes(query)) ||
+                    (app.category && app.category.toLowerCase().includes(query)) ||
+                    (app.note && app.note.toLowerCase().includes(query)) ||
+                    (app.version && app.version.toLowerCase().includes(query));
                 return matchesCategory && matchesSearch;
             });
 
             if (filtered.length === 0) {
-                emptyStateEl.style.display = "block";
+                if (emptyStateEl) emptyStateEl.style.display = "block";
                 return;
             }
 
-            emptyStateEl.style.display = "none";
+            if (emptyStateEl) emptyStateEl.style.display = "none";
 
             filtered.forEach(app => {
                 const card = document.createElement("div");
@@ -785,38 +746,43 @@
                 card.innerHTML = `
                     <div class="app-top">
                         <div class="app-main">
-                            <div class="app-badge-icon" style="background-color: ${app.color};">${iconContent}</div>
+                            <div class="app-badge-icon" style="background-color: ${app.color || "#2563eb"};">
+                                ${iconContent}
+                            </div>
                             <div>
                                 <div class="app-name">${app.name}</div>
-                                <div class="app-category">${app.category} • ${app.note}</div>
+                                <div class="app-category">${app.category} • ${app.note || ""}</div>
                             </div>
                         </div>
-                        <span class="app-version">${app.version}</span>
+                        <span class="app-version">${app.version || "APK"}</span>
                     </div>
                     <div class="btn-group">
-                        <a href="${app.url}" target="_blank" rel="noopener noreferrer" class="download-btn">تحميل APK</a>
+                        <a href="${app.url}" target="_blank" rel="noopener noreferrer" class="download-btn">تحميل</a>
                         ${playerBtnHtml}
                     </div>
                 `;
+
                 appsGridEl.appendChild(card);
             });
         }
 
-        searchInputEl.addEventListener("input", renderApps);
+        if (searchInputEl) {
+            searchInputEl.addEventListener("input", renderApps);
+        }
 
         filterButtons.forEach(btn => {
             btn.addEventListener("click", () => {
                 filterButtons.forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
-                currentFilter = btn.dataset.filter;
+                currentFilter = btn.dataset.filter || "الكل";
                 renderApps();
             });
         });
 
-                function updateClock() {
+        function updateClock() {
             const now = new Date();
-            const clockEl = document.getElementById("liveClock");
-            const dateEl = document.getElementById("liveDate");
+            const clockEl = document.getElementById("live-clock");
+            const dateEl = document.getElementById("live-date");
 
             if (clockEl) {
                 clockEl.textContent = now.toLocaleTimeString("ar-IQ", {
