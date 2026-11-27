@@ -536,19 +536,7 @@
                     <a href="https://www.mediafire.com/file/2st3kg39zz7s0jo/AKO_PLAYER_8.3.38_72.apk/file" target="_blank" class="download-btn">تحميل APK</a>
                 </div>
             </div>
-            {
-                
-        function updateClock() {
-            const now = new Date();
-            let h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-            let ap = h >= 12 ? 'م' : 'ص';
-            h = h % 12; h = h ? h : 12;
-            m = m < 10 ? '0' + m : m;
-            s = s < 10 ? '0' + s : s;
-            document.getElementById('clock').innerText = h + ':' + m + ':' + s + ' ' + ap;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+;
     </script>
 </body>
 </html>
