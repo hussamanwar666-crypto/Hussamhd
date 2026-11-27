@@ -37,7 +37,7 @@
             margin: 0 auto;
         }
 
-        /* الترويسة: الصورة + الاسم + الساعة */
+        /* الترويسة: الصورة + الاسم + العبارة والرابط + الساعة */
         .top-header {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -77,6 +77,33 @@
             font-size: 0.85rem;
             color: var(--text-muted);
             margin-top: 3px;
+        }
+
+        .header-note {
+            flex: 1;
+            text-align: center;
+            padding: 6px 10px;
+            min-width: 220px;
+        }
+
+        .header-note-text {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+
+        .channel-link {
+            display: inline-block;
+            margin-top: 6px;
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 0.86rem;
+            font-weight: 700;
+            direction: ltr;
+        }
+
+        .channel-link:hover {
+            text-decoration: underline;
         }
 
         .clock-box {
@@ -274,6 +301,11 @@
                     <div class="site-title">حسام شبكتي</div>
                     <div class="site-subtitle">تطبيقات التلفاز والاندرويد</div>
                 </div>
+            </div>
+
+            <div class="header-note">
+                <div class="header-note-text">جميع التطبيقات والبرامج مجانية للاندرويد فقط</div>
+                <a href="https://t.me/hussam_mohamad2000" target="_blank" rel="noopener noreferrer" class="channel-link">https://t.me/hussam_mohamad2000</a>
             </div>
 
             <div class="clock-box">
