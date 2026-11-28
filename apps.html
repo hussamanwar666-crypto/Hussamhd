@@ -16,6 +16,8 @@
             --accent-green-hover: #15803d;
             --accent-blue: #2563eb;
             --accent-blue-hover: #1d4ed8;
+            --accent-orange: #ea580c;
+            --accent-orange-hover: #c2410c;
         }
 
         * {
@@ -128,7 +130,7 @@
             margin-top: 2px;
         }
 
-        /* البحث والفلاتر */
+        /* البحث وحقل كود الداونلودر */
         .search-box {
             margin-bottom: 12px;
         }
@@ -148,6 +150,44 @@
             border-color: var(--accent-green);
         }
 
+        .code-box {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .code-input {
+            flex: 1;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 0.96rem;
+            outline: none;
+        }
+
+        .code-input:focus {
+            border-color: var(--accent-orange);
+        }
+
+        .code-btn {
+            background-color: var(--accent-orange);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-size: 0.94rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .code-btn:hover {
+            background-color: var(--accent-orange-hover);
+        }
+
+        /* الفلاتر */
         .filters-bar {
             display: flex;
             flex-wrap: wrap;
@@ -316,6 +356,11 @@
 
         <div class="search-box">
             <input type="text" id="search-input" class="search-input" placeholder="ابحث عن تطبيق...">
+        </div>
+
+        <div class="code-box">
+            <input type="text" id="downloader-code-input" class="code-input" inputmode="numeric" placeholder="أدخل أي كود Downloader هنا (مثال: 5361782)...">
+            <button type="button" id="open-code-btn" class="code-btn">فتح الكود</button>
         </div>
 
         <div class="filters-bar" id="filters-bar">
@@ -765,8 +810,33 @@
         const searchInputEl = document.getElementById("search-input");
         const filterButtons = document.querySelectorAll(".filter-btn");
         const emptyStateEl = document.getElementById("empty-state");
+        const codeInputEl = document.getElementById("downloader-code-input");
+        const openCodeBtnEl = document.getElementById("open-code-btn");
 
         let currentFilter = "الكل";
+
+        function openDownloaderCode() {
+            if (!codeInputEl) return;
+            const rawCode = codeInputEl.value.trim();
+            const cleanCode = rawCode.replace(/\D/g, "");
+            if (!cleanCode) {
+                codeInputEl.focus();
+                return;
+            }
+            window.location.href = "https://aftv.news/" + cleanCode;
+        }
+
+        if (openCodeBtnEl) {
+            openCodeBtnEl.addEventListener("click", openDownloaderCode);
+        }
+
+        if (codeInputEl) {
+            codeInputEl.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    openDownloaderCode();
+                }
+            });
+        }
 
         function renderApps() {
             const query = (searchInputEl ? searchInputEl.value : "").trim().toLowerCase();
